@@ -1,0 +1,46 @@
+import requests
+from requests import HTTPError
+
+coin_massiv = ("BTC", "ETH", "SOL", "NEAR", "BNB")
+for coin in coin_massiv:
+    url_kucoin = "https://api.kucoin.com/api/v1/market/allTickers"
+    url_binance = "https://api.binance.com/api/v3/ticker/price"
+    coin_kucoin = coin + "-USDT"
+    coin_binance = coin + "USDT"
+    r1 = requests.get(url=url_kucoin)
+    r2 = requests.get(url=url_binance)
+    tickers_kucoin = r1.json()["data"]["ticker"]
+    tickers_binance = r2.json()
+    len_json_kucoin = len(tickers_kucoin)
+    len_json_binance = len(tickers_binance)
+    alarm_dollars = 1
+
+    for i in range(len_json_kucoin):
+        if tickers_kucoin[i]["symbol"] == coin_kucoin:
+            price_kucoin = tickers_kucoin[i]["buy"]
+            # print(f'kucoin buy {coin_kucoin} - {tickers_kucoin[i]["buy"]}')
+            # print(f'kucoin sell {coin_kucoin} - {tickers_kucoin[i]["sell"]}')
+
+    for i in range(len_json_binance):
+        if tickers_binance[i]["symbol"] == coin_binance:
+            # print(f'binance price {coin_binance} - {tickers_binance[i]["price"]}')
+            price_binance = tickers_binance[i]["price"]
+
+    if price_kucoin > price_binance:
+        if (float(price_kucoin) - float(price_binance)) > alarm_dollars:
+            print("----")
+            print(f"ALARM! спред c kucoin на binance на {coin} = {float(price_kucoin) - float(price_binance)}")
+            print(f'kucoin price {coin_kucoin} - {price_kucoin}')
+            print(f'binance price {coin_binance} - {price_binance}')
+            print("----")
+        else:
+            print(f"спред c kucoin на binance на {coin} = {float(price_kucoin)-float(price_binance)}")
+    elif price_binance > price_kucoin:
+        if (float(price_binance) - float(price_kucoin)) > alarm_dollars:
+            print("----")
+            print(f"ALARM! спред c binance на kucoin на {coin} = {float(price_binance) - float(price_kucoin)}")
+            print(f'kucoin price {coin_kucoin} - {price_kucoin}')
+            print(f'binance price {coin_binance} - {price_binance}')
+            print("----")
+        else:
+            print(f"спред c binance на kucoin на {coin} = {float(price_binance)-float(price_kucoin)}")
