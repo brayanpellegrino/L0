@@ -1,0 +1,27 @@
+class Fruit():
+    def __init__(self, name):
+        self.name = name
+
+    def get_name(self):
+        print(f"фрукт - {self.name}")
+
+class Apple(Fruit):
+    def taste(self):
+        print("яблоко сладкое")
+
+class Banana(Fruit):
+    def taste(self):
+        print("банан мягкий")
+
+abrikos = Fruit("abrikos")
+yabloko = Apple("yabloko")
+banan = Banana("banan")
+
+
+abrikos.get_name()
+print("---")
+yabloko.get_name()
+yabloko.taste()
+print("---")
+banan.get_name()
+banan.taste()
