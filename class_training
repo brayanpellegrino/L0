@@ -1,0 +1,24 @@
+class Vehicle():
+    def __init__(self, marka, model, year):
+        self.marka = marka
+        self.model = model
+        self.year = year
+
+    def get_info(self):
+        print(f"Марка: {self.marka}, Модель: {self.model}, Год: {self.year}")
+
+class Car(Vehicle):
+    def start_engine(self):
+        print("машина завелась")
+
+class Bycicle(Vehicle):
+    def ring_bell(self):
+        print("звенит звонок велосипеда")
+
+kamaz = Vehicle("kamaz", "4280", 1997)
+vaz21099 = Car("vaz", "21099", 2001)
+merida = Bycicle("merida", "kalahari", 2005)
+
+kamaz.get_info()
+vaz21099.start_engine()
+merida.ring_bell()
