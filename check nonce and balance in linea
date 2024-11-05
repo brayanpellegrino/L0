@@ -1,0 +1,39 @@
+
+from eth_typing import ChecksumAddress, HexAddress, HexStr
+from web3 import AsyncHTTPProvider, AsyncWeb3
+import asyncio
+
+private_key = "0xede67373edd------cd29e86eff133"
+
+proxy = "Eg--6d:S--qX@95.214.---.231:6--6"
+
+request_kwargs = {
+    "proxy": f"http://{proxy}"
+} if proxy else {}
+
+rpc_linea = "https://1rpc.io/linea"
+
+w3_client = AsyncWeb3(AsyncHTTPProvider(rpc_linea, request_kwargs=request_kwargs))
+checksum_address = w3_client.to_checksum_address(w3_client.eth.account.from_key(private_key).address)
+
+
+async def check_connect():
+    return await w3_client.is_connected()
+
+
+async def nonce():
+    return await w3_client.eth.get_transaction_count(checksum_address)
+
+
+async def balance():
+    return await w3_client.eth.get_balance(checksum_address)
+
+print("вызов через main")
+
+
+async def main():
+    decimals = 18
+    print(f"Баланс {checksum_address} в сети Линеа {(await balance()) / 10 ** decimals:.6f} ETH. Всего в сети Линеа сделано {await nonce()} транзакций")
+
+
+asyncio.run(main())
